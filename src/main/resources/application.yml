@@ -1,0 +1,90 @@
+# Server settings
+server:
+  port: 8070
+#  session-timeout: 30
+  tomcat.max-threads: 100
+  tomcat.uri-encoding: UTF-8
+  context-path: /exam
+
+
+
+# DATASOURCE
+# Master datasource config
+---
+spring:
+  aop:
+    proxy-target-class: true
+  datasource:
+    druid:
+      min-idle: 5
+      web-stat-filter:
+        session-stat-enable: true
+        url-pattern: /*
+        session-stat-max-count: 10
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+        enabled: true
+        profile-enable: true
+        principal-session-name: user
+      validation-query-timeout: 30000
+      max-active: 20
+      test-while-idle: true
+      validation-query: SELECT 1
+      aop-patterns: com.example.exam.service.impl.*
+      use-global-data-source-stat: true
+      filters: stat,wall,log4j
+      max-wait: 60000
+      master:
+        password: root
+        port: 3306
+        name: master
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost/test?useSSL=false
+        username: root
+      filter:
+        stat:
+          merge-sql: true
+          db-type: mysql
+          slow-sql-millis: 1000
+          log-slow-sql: true
+        slf4j:
+          enabled: true
+        wall:
+          config:
+            drop-table-allow: false
+            delete-allow: true
+          enabled: true
+      slave:
+        password: root
+        port: 3306
+        name: slave
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost/exam?useSSL=false
+        username: root
+      test-on-borrow: false
+      stat-view-servlet:
+        url-pattern: /druid/*
+        reset-enable: true
+        login-password: admin
+        login-username: admin
+        enabled: true
+      pool-prepared-statements: false
+      initial-size: 5
+      test-on-return: false
+    type: com.alibaba.druid.pool.DruidDataSource
+
+
+
+
+# MyBatis
+mybatis:
+    typeAliasesPackage: com.example.exam.domain
+    mapperLocations: classpath:/mybatis/mapper/*.xml
+    configLocation: classpath:/mybatis/mybatis-config.xml
+
+## log
+logging:
+  level:
+    com.example.exam.dao: debug
+    org.springfromework.web: info
+    com.example.exam.controller: error
+  file: log\exam.log
