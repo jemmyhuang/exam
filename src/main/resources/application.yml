@@ -80,11 +80,3 @@ mybatis:
     typeAliasesPackage: com.example.exam.domain
     mapperLocations: classpath:/mybatis/mapper/*.xml
     configLocation: classpath:/mybatis/mybatis-config.xml
-
-## log
-logging:
-  level:
-    com.example.exam.dao: debug
-    org.springfromework.web: info
-    com.example.exam.controller: error
-  file: log\exam.log
